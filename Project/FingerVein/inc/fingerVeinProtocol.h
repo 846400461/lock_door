@@ -1,0 +1,56 @@
+#ifndef FINGER_VEIN_PROTOCOL_H
+#define FINGER_VEIN_PROTOCOL_H
+
+#include "stm8l15x.h"
+
+typedef struct XgPacket
+{
+	unsigned short  wPrefix; //包标识xAABB
+	unsigned char   bAddress; //设备地址，0为广播
+	unsigned char   bCmd; //命令码
+	unsigned char   bEncode; //数据编码，默认为0 
+	unsigned char   bDataLen; //有效数据长度（字节）
+	unsigned char   bData[16]; //包数据
+	unsigned short  wCheckSum; //包检验，0-22字节和
+};
+
+/*设备相关指令*/
+#define XG_CMD_CONNECTION             0x01 //连接设备,必须带位以上密码，默认密码全为(0x30)
+#define XG_CMD_CLOSE_CONNECTION       0x02 //关闭连接
+#define XG_CMD_GET_SYSTEM_INFO        0x03 //获取版本号和设置信息
+#define XG_CMD_FACTORY_SETTING        0x04 //恢复出厂设置
+#define XG_CMD_SET_DEVICE_ID          0x05 //设置设备编号-255
+#define XG_CMD_SET_BAUDRATE           0x06 //设置波特率-4
+#define XG_CMD_SET_SECURITYLEVEL      0x07 //设置安全等级-4
+#define XG_CMD_SET_TIMEOUT            0x08 //设置等待手指放入超时-255秒
+#define XG_CMD_SET_DUP_CHECK          0x09 //设置重复登录检查-1
+#define XG_CMD_SET_PASSWORD           0x0A //设置通信密码
+#define XG_CMD_CHECK_PASSWORD         0x0B //检查密码是否正确
+#define XG_CMD_REBOOT                 0x0C //复位重启设备
+#define XG_CMD_SET_SAME_FV            0x0D //登记的时候检查是否为同一根手指
+
+/*识别相关指令*/
+#define XG_CMD_FINGER_STATUS          0x10 //检测手指放置状态
+#define XG_CMD_CLEAR_ENROLL           0x11 //清除指定ID登录数据
+#define XG_CMD_CLEAR_ALL_ENROLL       0x12 //清除所有ID登录数据
+#define XG_CMD_GET_EMPTY_ID           0x13 //获取空（无登录数据）ID
+#define XG_CMD_GET_ENROLL_INFO        0x14 //获取总登录用户数和模板数
+#define XG_CMD_GET_ID_INFO            0x15 //获取指定ID登录信息
+#define XG_CMD_ENROLL                 0x16 //指定ID登录
+#define XG_CMD_VERIFY                 0x17 //1:1认证或:N识别
+#define XG_CMD_IDENTIFY_FREE          0x18 //FREE识别模式，自动识别并发送状态
+#define XG_CMD_CANCEL                 0x19 //取消FREE识别模式
+#define XG_CMD_RAM_MODE               0x1A //内存操作模式
+
+/******************************高级指令****************************************/
+/*数据读写相关指令*/
+#define XG_CMD_READ_DATA              0x20 //从设备读取数据
+#define XG_CMD_WRITE_DATA             0x21 //写入数据到设备
+#define XG_CMD_READ_ENROLL            0x22 //读取指定ID登录数据
+#define XG_CMD_WRITE_ENROLL           0x23 //写入（覆盖）指定ID登录数据
+
+uint16_t checkSum(uint8_t* pBuf, uint32_t len);
+
+void initFingerVeinPacket(struct XgPacket* xgPacket, uint8_t bCmd, uint8_t bDataLen, uint8_t* bData);
+
+#endif
