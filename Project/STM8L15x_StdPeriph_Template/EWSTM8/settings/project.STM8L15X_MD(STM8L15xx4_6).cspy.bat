@@ -25,7 +25,7 @@ if not "%~1" == "" goto debugFile
 
 @echo on 
 
-"C:\Program Files (x86)\IAR Systems\Embedded Workbench 8.0\common\bin\cspybat" -f "C:\Users\my_Cat\Desktop\lock_door\Project\STM8L15x_StdPeriph_Template\EWSTM8\settings\project.STM8L15X_MD(STM8L15xx4_6).general.xcl" --backend -f "C:\Users\my_Cat\Desktop\lock_door\Project\STM8L15x_StdPeriph_Template\EWSTM8\settings\project.STM8L15X_MD(STM8L15xx4_6).driver.xcl" 
+"D:\Program Files (x86)\IAR Systems\Embedded Workbench 8.0\common\bin\cspybat" -f "D:\Users\84640\lockdoor\STM8L15x-16x-05x-AL31-L_StdPeriph_Lib\Project\STM8L15x_StdPeriph_Template\EWSTM8\settings\project.STM8L15X_MD(STM8L15xx4_6).general.xcl" --backend -f "D:\Users\84640\lockdoor\STM8L15x-16x-05x-AL31-L_StdPeriph_Lib\Project\STM8L15x_StdPeriph_Template\EWSTM8\settings\project.STM8L15X_MD(STM8L15xx4_6).driver.xcl" 
 
 @echo off 
 goto end 
@@ -34,7 +34,7 @@ goto end
 
 @echo on 
 
-"C:\Program Files (x86)\IAR Systems\Embedded Workbench 8.0\common\bin\cspybat" -f "C:\Users\my_Cat\Desktop\lock_door\Project\STM8L15x_StdPeriph_Template\EWSTM8\settings\project.STM8L15X_MD(STM8L15xx4_6).general.xcl" "--debug_file=%~1" --backend -f "C:\Users\my_Cat\Desktop\lock_door\Project\STM8L15x_StdPeriph_Template\EWSTM8\settings\project.STM8L15X_MD(STM8L15xx4_6).driver.xcl" 
+"D:\Program Files (x86)\IAR Systems\Embedded Workbench 8.0\common\bin\cspybat" -f "D:\Users\84640\lockdoor\STM8L15x-16x-05x-AL31-L_StdPeriph_Lib\Project\STM8L15x_StdPeriph_Template\EWSTM8\settings\project.STM8L15X_MD(STM8L15xx4_6).general.xcl" "--debug_file=%~1" --backend -f "D:\Users\84640\lockdoor\STM8L15x-16x-05x-AL31-L_StdPeriph_Lib\Project\STM8L15x_StdPeriph_Template\EWSTM8\settings\project.STM8L15X_MD(STM8L15xx4_6).driver.xcl" 
 
 @echo off 
 :end
