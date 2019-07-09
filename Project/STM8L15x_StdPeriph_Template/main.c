@@ -28,15 +28,13 @@
 #include <stdio.h>
 #include "stm8l15x.h"
 #include "fingerVeinProtocol.h"
-
+#include "tim4.h"
 #include "usart.h"
 
 
 #define LED_GPIO_PORT  GPIOG
 #define LED_GPIO_PINS  GPIO_Pin_4 | GPIO_Pin_5 | GPIO_Pin_6 | GPIO_Pin_7
 
-#define LED_GPIO_PORT  GPIOH
-#define LED_GPIO_PINS  GPIO_Pin_0 | GPIO_Pin_1 | GPIO_Pin_2 | GPIO_Pin_3
 
 /** @addtogroup STM8L15x_StdPeriph_Examples
   * @{
@@ -54,6 +52,7 @@
 /* Private function prototypes -----------------------------------------------*/
 
 void Delay (uint32_t nCount);
+void delay_ms(uint32_t nCount);
 void send(uint8_t *data);
 /* Private functions ---------------------------------------------------------*/
 
@@ -66,26 +65,31 @@ void send(uint8_t *data);
 
 void main(void)
 {
-  struct XgPacket xgPa;
-  uint8_t data[]={0x30,0x30,0x30,0x30,0x30,0x30,0x30,0x30};
-   //GPIO_Init(LED_GPIO_PORT, LED_GPIO_PINS, GPIO_Mode_Out_PP_Low_Fast);
+  //struct XgPacket xgPa;
+  //uint8_t data[]={0x30,0x30,0x30,0x30,0x30,0x30,0x30,0x30};
+   GPIO_Init(LED_GPIO_PORT, LED_GPIO_PINS, GPIO_Mode_Out_PP_Low_Fast);
   /*High speed internal clock prescaler: 1*/
   CLK_SYSCLKDivConfig(CLK_SYSCLKDiv_1); 
-
-  /* Initialize LEDs mounted on STM8L152X-EVAL board */
-   /* USART configuration -------------------------------------------*/
-  USART1_Config();
-  USART2_Config();
-  USART3_Config();
-  Delay(20000);
-  // send("welcome to usart\n");
-  initFingerVeinPacket(&xgPa,XG_CMD_CONNECTION,0x08,data);
-  sendData(USART1,(uint8_t *)&xgPa,24);
- 
+//
+//  /* Initialize LEDs mounted on STM8L152X-EVAL board */
+//   /* USART configuration -------------------------------------------*/
+//  USART1_Config();
+//  USART2_Config();
+//  USART3_Config();
+//  //tim4config();
+//  Delay(20000);
+//  // send("welcome to usart\n");
+//  initFingerVeinPacket(&xgPa,XG_CMD_CONNECTION,0x08,data);
+//  sendData(USART1,(uint8_t *)&xgPa,24);
+//  
   
 
    while (1)
   {
+      GPIO_SetBits(GPIOG,GPIO_Pin_4);  
+      Delay(1000);
+      GPIO_ResetBits(GPIOG,GPIO_Pin_4);
+      Delay(1000);
 
   }
 }
@@ -108,6 +112,12 @@ void Delay(uint32_t nCount)
   {
     nCount--;
   }
+}
+void delay_ms(uint32_t nCount)
+{
+  for(int i=nCount;i>0;i--)
+    for(int y=2000;y>0;y--);
+
 }
 
 void send(uint8_t *data)

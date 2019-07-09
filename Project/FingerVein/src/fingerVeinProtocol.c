@@ -7,7 +7,6 @@ uint16_t checkSum(uint8_t* pBuf, uint32_t len){
   for(i=0;i<len;i++){
     sum+=pBuf[i];
   }
-
   temp=sum&0xFF;
   sum>>=8;
   sum|=(temp<<8);

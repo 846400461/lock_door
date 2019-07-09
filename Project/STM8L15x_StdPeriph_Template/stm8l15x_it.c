@@ -50,6 +50,7 @@
 //uint8_t TxBuffer[] = "\n\rUSART Example: USART-Hyperterminal communication using Interrupt\nEnter your Text\n\r";
 uint8_t TxBuffer[] = "1";
 uint8_t TxCounter = 0;
+uint32_t count=0;
 
 /* Private function prototypes -----------------------------------------------*/
 /* Private functions ---------------------------------------------------------*/
@@ -405,6 +406,18 @@ INTERRUPT_HANDLER(TIM4_UPD_OVF_TRG_IRQHandler, 25)
   /* In order to detect unexpected events during development,
      it is recommended to set a breakpoint on the following instruction.
   */
+//    count++;
+//    TIM4_ClearITPendingBit(TIM4_IT_Update);
+//    if(count==1000)
+//    {
+//      GPIO_SetBits(GPIOG,GPIO_Pin_4);      
+//      
+//    }
+//    if(count==2000)
+//    {
+//      GPIO_ResetBits(GPIOG,GPIO_Pin_4);
+//      count=0;
+//    }
 }
 /**
   * @brief SPI1 Interrupt routine.
