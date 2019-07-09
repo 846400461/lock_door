@@ -4,3 +4,6 @@
 *.o
 *.linf
 *.browse
+*.out
+*.dep
+*.wsdt
