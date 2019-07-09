@@ -36,6 +36,9 @@
 /* Exported constants --------------------------------------------------------*/
 /* Exported macro ------------------------------------------------------------*/
 /* Exported functions ------------------------------------------------------- */
+
+extern uint32_t count100ms;
+
 #ifdef _COSMIC_
  void _stext(void); /* RESET startup routine */
  INTERRUPT void NonHandledInterrupt(void);

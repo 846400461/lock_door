@@ -6397,6 +6397,9 @@
     <group>
         <name>util</name>
         <file>
+            <name>$PROJ_DIR$\..\..\util\src\myqueue.c</name>
+        </file>
+        <file>
             <name>$PROJ_DIR$\..\..\util\src\tim4.c</name>
         </file>
         <file>

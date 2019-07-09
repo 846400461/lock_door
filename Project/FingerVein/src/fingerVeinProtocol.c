@@ -1,5 +1,7 @@
 #include "fingerVeinProtocol.h"
 
+struct XgPacket xgPacket;
+
 uint16_t checkSum(uint8_t* pBuf, uint32_t len){
   uint16_t sum=0;
   uint16_t temp=0;
@@ -26,4 +28,16 @@ void initFingerVeinPacket(struct XgPacket* xgPacket, uint8_t bCmd, uint8_t bData
     xgPacket->bData[i]=0;
   xgPacket->wCheckSum=checkSum((uint8_t*)xgPacket,22);
 
+}
+
+uint8_t getStateForFiVePacket(struct XgPacket* xgPacket){
+  return xgPacket->bData[0];
+}
+
+void initFingerProtocol(void){
+  fingerQueue=createQueue(50,sizeof(struct XgPacket));
+}
+
+void deInitFingerProtocol(void){
+  deleteQueue(&fingerQueue);
 }

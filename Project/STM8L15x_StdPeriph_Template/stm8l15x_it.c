@@ -28,6 +28,8 @@
 
 /* Includes ------------------------------------------------------------------*/
 #include "stm8l15x_it.h"
+#include "stateManager.h"
+#include "fingerVeinProtocol.h"
 
 
 
@@ -50,7 +52,7 @@
 //uint8_t TxBuffer[] = "\n\rUSART Example: USART-Hyperterminal communication using Interrupt\nEnter your Text\n\r";
 uint8_t TxBuffer[] = "1";
 uint8_t TxCounter = 0;
-uint32_t count=0;
+uint32_t count100ms=0;
 
 /* Private function prototypes -----------------------------------------------*/
 /* Private functions ---------------------------------------------------------*/
@@ -365,13 +367,67 @@ INTERRUPT_HANDLER(TIM3_CC_USART3_RX_IRQHandler, 22)
   /* In order to detect unexpected events during development,
      it is recommended to set a breakpoint on the following instruction.
   */
-#ifdef USE_STM8L1528_EVAL
-  uint8_t temp;
+  static uint8_t count=0 ;
+  static uint8_t *data;
+  static struct XgPacket usart3XgPacket;
+  uint8_t temp=0,checkSum=0;
 
   /* Read one byte from the receive data register and send it back */
-  temp = (USART_ReceiveData8(USART3) & 0x7F);
-  USART_SendData8(USART3, temp);
-#endif /* USE_STM8L1528_EVAL */
+  temp = USART_ReceiveData8(USART3);
+  
+  switch(count){
+  case 0:
+    if(temp!=0xBB) return;
+    usart3XgPacket.wPrefix=(temp<<8)|0x0000;
+    break;
+  case 1:
+    if(temp!=0xAA){
+      count=0;
+      return;
+    }
+    usart3XgPacket.wPrefix|=temp;
+    break;
+  case 2:
+    if(temp!=0x00){
+      count=0;
+      return;
+    }
+    usart3XgPacket.bAddress=temp;
+    break;
+  case 3:
+    usart3XgPacket.bCmd=temp;
+    break;
+  case 4:
+    usart3XgPacket.bEncode=temp;
+    break;
+  case 5:
+    usart3XgPacket.bDataLen=temp;
+    break;
+  }
+  
+  if(count>5&&count<22)
+    usart3XgPacket.bData[count-6]=temp;
+  
+  if(count==22)
+    usart3XgPacket.wCheckSum=0x0000|temp;
+  
+  if(count==23){
+    usart3XgPacket.wCheckSum|=(temp<<8);
+    data=(uint8_t*)&usart3XgPacket;
+    for(int i=0;i<22;i++){
+      checkSum+=data[i];
+    }
+    if(checkSum!=usart3XgPacket.wCheckSum){
+      count=0;
+      return;
+    }
+    enqueue_t(fingerQueue,(void*)&usart3XgPacket);
+    count=0;
+    return;
+  }
+    
+  count++;
+
 }
 /**
   * @brief TIM1 Update/Overflow/Trigger/Commutation Interrupt routine.
@@ -406,18 +462,15 @@ INTERRUPT_HANDLER(TIM4_UPD_OVF_TRG_IRQHandler, 25)
   /* In order to detect unexpected events during development,
      it is recommended to set a breakpoint on the following instruction.
   */
-//    count++;
-//    TIM4_ClearITPendingBit(TIM4_IT_Update);
-//    if(count==1000)
-//    {
-//      GPIO_SetBits(GPIOG,GPIO_Pin_4);      
-//      
-//    }
-//    if(count==2000)
-//    {
-//      GPIO_ResetBits(GPIOG,GPIO_Pin_4);
-//      count=0;
-//    }
+    static uint32_t count=0;
+    count++;
+    TIM4_ClearITPendingBit(TIM4_IT_Update);
+    if(count==100)
+    {
+      count=0;
+      count100ms++;      
+      
+    }
 }
 /**
   * @brief SPI1 Interrupt routine.

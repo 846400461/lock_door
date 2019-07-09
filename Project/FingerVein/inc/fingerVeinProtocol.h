@@ -2,6 +2,9 @@
 #define FINGER_VEIN_PROTOCOL_H
 
 #include "stm8l15x.h"
+#include "myqueue.h"
+
+extern xQueue fingerQueue;
 
 struct XgPacket
 {
@@ -52,5 +55,11 @@ struct XgPacket
 uint16_t checkSum(uint8_t* pBuf, uint32_t len);
 
 void initFingerVeinPacket(struct XgPacket* xgPacket, uint8_t bCmd, uint8_t bDataLen, uint8_t* bData);
+
+void deInitFingerProtocol(void);
+
+void initFingerProtocol(void);
+
+uint8_t getStateForFiVePacket(struct XgPacket* xgPacket);
 
 #endif
