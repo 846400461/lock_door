@@ -47,20 +47,20 @@
                 <option>
                     <name>GenRuntimeLibSelect</name>
                     <version>0</version>
-                    <state>1</state>
+                    <state>2</state>
                 </option>
                 <option>
                     <name>GenRuntimeLibSelectSlave</name>
                     <version>0</version>
-                    <state>1</state>
+                    <state>2</state>
                 </option>
                 <option>
                     <name>GenRTDescription</name>
-                    <state>Use the normal configuration of the C/EC++ runtime library. No locale interface, C locale, no file descriptor support, no multibytes in printf and scanf, and no hex floats in strtod.</state>
+                    <state>Use the full configuration of the C/EC++ runtime library. Full locale interface, C locale, file descriptor support, multibytes in printf and scanf, and hex floats in strtod.</state>
                 </option>
                 <option>
                     <name>GenRTConfigPath</name>
-                    <state>$TOOLKIT_DIR$\LIB\dlstm8mmn.h</state>
+                    <state>$TOOLKIT_DIR$\LIB\dlstm8mmf.h</state>
                 </option>
                 <option>
                     <name>GenLibInFormatter</name>
@@ -188,7 +188,7 @@
                 </option>
                 <option>
                     <name>CCDefines</name>
-                    <state>USE_STM8L1526_EVAL</state>
+                    <state>xUSE_STM8L1526_EVAL</state>
                     <state>STM8L15X_MD</state>
                 </option>
                 <option>
@@ -263,8 +263,8 @@
                     <state>$PROJ_DIR$\..\..\..\Utilities\STM8_EVAL\STM8L1526_EVAL</state>
                     <state>$PROJ_DIR$\..\..\..\Utilities\STM8_EVAL\Common</state>
                     <state>$PROJ_DIR$\..\..\..\Utilities\Misc</state>
-                    <state>D:\Users\84640\lockdoor\STM8L15x-16x-05x-AL31-L_StdPeriph_Lib\Project\FingerVein\inc</state>
-                    <state>D:\Users\84640\lockdoor\STM8L15x-16x-05x-AL31-L_StdPeriph_Lib\Project\util\inc</state>
+                    <state>$PROJ_DIR$\..\..\FingerVein\inc</state>
+                    <state>$PROJ_DIR$\..\..\util\inc</state>
                 </option>
                 <option>
                     <name>CCStdIncCheck</name>
@@ -4971,6 +4971,9 @@
     </group>
     <group>
         <name>util</name>
+        <file>
+            <name>$PROJ_DIR$\..\..\util\src\tim4.c</name>
+        </file>
         <file>
             <name>$PROJ_DIR$\..\..\util\src\usart.c</name>
         </file>

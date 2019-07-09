@@ -30,7 +30,7 @@ void USART1_Config(void)
   USART_ITConfig(USART1, USART_IT_RXNE, ENABLE);
   /* Enable the USART Transmit complete interrupt: this interrupt is generated when the USART
     transmit Shift Register is empty */
-  USART_ITConfig(USART1, USART_IT_TC, ENABLE);
+  //USART_ITConfig(USART1, USART_IT_TC, ENABLE);
 
   /* Enable USART */
   USART_Cmd(USART1, ENABLE);

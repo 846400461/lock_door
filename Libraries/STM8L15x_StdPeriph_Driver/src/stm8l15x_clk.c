@@ -117,7 +117,7 @@ CONST uint8_t SYSDivFactor[5] = {1, 2, 4, 8, 16}; /*!< Holds the different Maste
   * @param  None
   * @retval None
   */
-void CLK_DeInit(void)
+void CLK_DeInit(void)//复位所有时钟寄存器
 {
   CLK->ICKCR = CLK_ICKCR_RESET_VALUE;
   CLK->ECKCR = CLK_ECKCR_RESET_VALUE;
@@ -157,7 +157,7 @@ void CLK_DeInit(void)
   *         clock cycles.  
   * @retval None
   */
-void CLK_HSICmd(FunctionalState NewState)
+void CLK_HSICmd(FunctionalState NewState)//使能或禁能内部高速振荡器
 {
   /* Check the parameters */
   assert_param(IS_FUNCTIONAL_STATE(NewState));
@@ -246,7 +246,7 @@ void CLK_LSICmd(FunctionalState NewState)
   *         not used by the RTC, output or involved in a switching operation.
   * @retval None
   */
-void CLK_HSEConfig(CLK_HSE_TypeDef CLK_HSE)
+void CLK_HSEConfig(CLK_HSE_TypeDef CLK_HSE)//打开，关闭或者旁路外部高速振荡器
 {
   /* Check the parameters */
   assert_param(IS_CLK_HSE(CLK_HSE));
@@ -303,7 +303,7 @@ void CLK_LSEConfig(CLK_LSE_TypeDef CLK_LSE)
   * @param  None
   * @retval None
   */
-void CLK_ClockSecuritySystemEnable(void)
+void CLK_ClockSecuritySystemEnable(void)//css时钟安全系统使能
 {
   /* Set CSSEN bit */
   CLK->CSSR |= CLK_CSSR_CSSEN;
@@ -674,7 +674,7 @@ void CLK_BEEPClockConfig(CLK_BEEPCLKSource_TypeDef CLK_BEEPCLKSource)
   *          This parameter can be: ENABLE or DISABLE.
   * @retval None
   */
-void CLK_PeripheralClockConfig(CLK_Peripheral_TypeDef CLK_Peripheral, FunctionalState NewState)
+void CLK_PeripheralClockConfig(CLK_Peripheral_TypeDef CLK_Peripheral, FunctionalState NewState)//使能外设时钟  CLK_Peripheral：CLK_Peripheral_USART1。NewState：DISABLE = 0, ENABLE = !DISABLE
 {
   uint8_t reg = 0;
 

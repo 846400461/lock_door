@@ -1,15 +1,12 @@
-/**
-  @page exampletemplate Project Example Template
-  
+/** @page USART_HyperTerminal_Interrupts Use the USART interrupts to communicate with the HyperTerminal
+
   @verbatim
-  ******************** (C) COPYRIGHT 2014 STMicroelectronics *******************
-  * @file    readme.txt 
+  ******************** (C) COPYRIGHT 2013 STMicroelectronics *******************
+  * @file    USART/USART_HyperTerminal_Interrupts/readme.txt 
   * @author  MCD Application Team
-  * @version V1.6.1
+  * @version V1.5.2
   * @date    30-September-2014
-  * @brief   This sub-directory contains all the user-modifiable files 
-  *          needed to create a new project linked with the STM8L15x 
-  *          Standard Peripheral Library.
+  * @brief   Description of the USART HyperTherminal interrupts Example.
   ******************************************************************************
   *
   * Licensed under MCD-ST Liberty SW License Agreement V2, (the "License");
@@ -27,49 +24,82 @@
   ******************************************************************************
    @endverbatim
 
-@par Project Example Template Description 
 
-This example is used as a template that can be used as reference to build any new 
-firmware development for all STM8L product devices using the STM8L15x/16x/05x/AL3Lx/AL31x 
-Standard Peripherals Library.
+  @par Example description
+
+  This example provides a description of how to use the USART interrupts to 
+  communicate with the HyperTerminal.
+  The USART sends a predefined buffer to the HyperTerminal and keep waiting 
+  data to be entered by user and toggling infinitely LD1..LD4, each byte 
+  received is sent back to the HyperTerminal. 
+  The communication is managed by Transmit and Receive interrupts. 
+
+  USART is configured as follow:
+    - BaudRate = 115200 baud  
+    - Word Length = 8 Bits (Word Length = 7 data bit + 1 parity bit  
+    - One Stop Bit
+    - Odd parity
+    - Receive and transmit enabled
+    - USART Clock disabled
+  @note When the parity is enabled, the computed parity is inserted at the MSB
+          position of the transmitted data.
+
+              
+  @par Directory contents
+
+  - USART/USART_HyperTerminal_Interrupts/main.c            Main file containing the "main" function
+  - USART/USART_HyperTerminal_Interrupts/stm8l15x_conf.h   Library Configuration file
+  - USART/USART_HyperTerminal_Interrupts/stm8l15x_it.c     Interrupt routines source
+  - USART/USART_HyperTerminal_Interrupts/stm8l15x_it.h     Interrupt routines declaration
 
 
-@par Directory contents 
+  @par Hardware and software environment
 
-This folder contains standard template projects for EWSTM8, STVD with Cosmic, 
-STVD with raisonance and RIDE toolchains that compile the needed STM8L Standard
-Peripheral's drivers plus all the user-modifiable files that are necessary to 
-create a new project. 
+    - This example runs on STM8L15x High-Density, Medium-Density Plus, Medium-Density
+    and Low-Density Devices.
+  
+  - This example has been tested with STMicroelectronics STM8L1528-EVAL 
+    (STM8L15x High-Density devices) and STM8L1526-EVAL (STM8L15x Medium-Density and
+    Low-Density devices) evaluation boards and can be easily tailored to any other
+    development board.
 
-  - Project/STM8L15x_StdPeriph_Template/stm8l15x_conf.h    Library Configuration file
-
-  - Project/STM8L15x_StdPeriph_Template/stm8l15x.c:     Source file containing the interrupt handlers (the 
-                                                        function bodies are empty in this template).
-
-  - Project/STM8L15x_StdPeriph_Template/stm8l15x.h      Header file including all interrupt handlers prototypes.
-
-  - Project/STM8L15x_StdPeriph_Template/main.c          Main program
-          
- @note
-  - Low-Density devices are STM8L15x microcontrollers where the Flash memory 
-    density ranges between 4 and 8 Kbytes.
-  - Medium-Density devices are STM8L15x microcontrollers where the 
-    Flash memory density ranges between 16 and 32 Kbytes.
-  - Medium density Plus devices are STM8L151R6, STM8L152R6 microcontrollers 
-    where the Flash memory density is fixed and equal to 32 Kbytes and with 
-    wider range of peripheral and features than the medium density devices. 
-  - High-Density devices are STM8L15x microcontrollers where the 
-    Flash memory density is 64 Kbytes and with the same peripheral set than 
-    Medium Density Plus devices.
-  - Value line low density STM8L05xx devices are STM8L051x3 microcontrollers
-    with 8-KB Flash
-  - Value line medium density STM8L05xx devices are STM8L052x6 microcontrollers 
-    with 32-KB Flash
-  - Value line high density STM8L05xx devices: STM8L052x8 microcontrollers
-    with 64-KB Flash
-  - Medium density STM8AL31xx/STM8AL3Lxx devices: STM8AL3168, STM8AL3166, 
-    STM8AL3148,STM8AL3146, STM8AL3138, STM8AL3136, STM8AL3L68, STM8AL3L66, 
-    STM8AL3L48, STM8AL3L46 microcontrollers with 8-KB, 16-KB or 32-KB Flash
+  - STM8L1528-EVAL Set-up 
+    - Make sure that the LCD glass daughter board is mounted in IO position.
+      For more details please refer to the evaluation board user manual.
+    - Connect a null-modem female/female RS232 cable between the DB9 connector 
+       CN7 and PC serial port.
+    - Make sure that JP5 jumper is in RS232 position
+    - Make sure that JP11 jumper is in RS232 position
+    - Make sure that JP12 jumper is in RS232 position
     
+  - STM8L1526-EVAL Set-up  
+    - Make sure that the LCD glass daughter board is mounted in IO position.
+      For more details please refer to the evaluation board user manual.
+    - Connect a null-modem female/female RS232 cable between the DB9 connector 
+      CN1 and PC serial port.
+    - Make sure that JP5 jumper is in RS232 position
+
+         
+  - HyperTerminal configuration:
+     - Word Length = 7 Bits
+     - One Stop Bit
+     - Odd parity
+     - BaudRate = 115200 baud
+
+
+  @par How to use it ?
+
+  In order to make the program work, you must do the following :
+
+  - Copy all source files from this example folder to the template folder under
+    Project\STM8L15x_StdPeriph_Template
+  - Open your preferred toolchain 
+  - Add the required file:
+    - stm8_eval.c   (under Utilities\STM8_EVAL)  
+  - Rebuild all files and load your image into target memory
+  - Run the example
+  
+
+
  * <h3><center>&copy; COPYRIGHT STMicroelectronics</center></h3>
  */

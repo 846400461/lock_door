@@ -1,8 +1,8 @@
 /**
   ******************************************************************************
-  * @file    Project/STM8L15x_StdPeriph_Template/stm8l15x_it.h
+  * @file    USART/USART_HyperTerminal_Interrupts/stm8l15x_it.h
   * @author  MCD Application Team
-  * @version V1.6.1
+  * @version V1.5.2
   * @date    30-September-2014
   * @brief   This file contains the headers of the interrupt handlers.
   ******************************************************************************
@@ -23,7 +23,7 @@
   * limitations under the License.
   *
   ******************************************************************************
-  */
+  */ 
 
 /* Define to prevent recursive inclusion -------------------------------------*/
 #ifndef __STM8L15x_IT_H

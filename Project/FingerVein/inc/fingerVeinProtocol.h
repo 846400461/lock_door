@@ -3,7 +3,7 @@
 
 #include "stm8l15x.h"
 
-typedef struct XgPacket
+struct XgPacket
 {
 	unsigned short  wPrefix; //包标识xAABB
 	unsigned char   bAddress; //设备地址，0为广播

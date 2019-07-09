@@ -1,42 +1,42 @@
-"D:\Users\84640\lockdoor\STM8L15x-16x-05x-AL31-L_StdPeriph_Lib\Libraries\STM8L15x_StdPeriph_Driver\src\stm8l15x_itc.c"
+"C:\Users\my_Cat\Desktop\lock_door\Libraries\STM8L15x_StdPeriph_Driver\src\stm8l15x_itc.c"
 -std=c99
 -ferror-limit=0
 -I
-D:\Users\84640\lockdoor\STM8L15x-16x-05x-AL31-L_StdPeriph_Lib\Project\STM8L15x_StdPeriph_Template\EWSTM8\..
+C:\Users\my_Cat\Desktop\lock_door\Project\STM8L15x_StdPeriph_Template\EWSTM8\..
 -I
-D:\Users\84640\lockdoor\STM8L15x-16x-05x-AL31-L_StdPeriph_Lib\Project\STM8L15x_StdPeriph_Template\EWSTM8\..\..\..\Libraries\STM8L15x_StdPeriph_Driver\inc
+C:\Users\my_Cat\Desktop\lock_door\Project\STM8L15x_StdPeriph_Template\EWSTM8\..\..\..\Libraries\STM8L15x_StdPeriph_Driver\inc
 -I
-D:\Users\84640\lockdoor\STM8L15x-16x-05x-AL31-L_StdPeriph_Lib\Project\STM8L15x_StdPeriph_Template\EWSTM8\..\..\..\Utilities\STM8_EVAL
+C:\Users\my_Cat\Desktop\lock_door\Project\STM8L15x_StdPeriph_Template\EWSTM8\..\..\..\Utilities\STM8_EVAL
 -I
-D:\Users\84640\lockdoor\STM8L15x-16x-05x-AL31-L_StdPeriph_Lib\Project\STM8L15x_StdPeriph_Template\EWSTM8\..\..\..\Utilities\STM8_EVAL\STM8L1526_EVAL
+C:\Users\my_Cat\Desktop\lock_door\Project\STM8L15x_StdPeriph_Template\EWSTM8\..\..\..\Utilities\STM8_EVAL\STM8L1526_EVAL
 -I
-D:\Users\84640\lockdoor\STM8L15x-16x-05x-AL31-L_StdPeriph_Lib\Project\STM8L15x_StdPeriph_Template\EWSTM8\..\..\..\Utilities\STM8_EVAL\Common
+C:\Users\my_Cat\Desktop\lock_door\Project\STM8L15x_StdPeriph_Template\EWSTM8\..\..\..\Utilities\STM8_EVAL\Common
 -I
-D:\Users\84640\lockdoor\STM8L15x-16x-05x-AL31-L_StdPeriph_Lib\Project\STM8L15x_StdPeriph_Template\EWSTM8\..\..\..\Utilities\Misc
+C:\Users\my_Cat\Desktop\lock_door\Project\STM8L15x_StdPeriph_Template\EWSTM8\..\..\..\Utilities\Misc
 -I
-D:\Users\84640\lockdoor\STM8L15x-16x-05x-AL31-L_StdPeriph_Lib\Project\FingerVein\inc
+C:\Users\my_Cat\Desktop\lock_door\Project\STM8L15x_StdPeriph_Template\EWSTM8\..\..\FingerVein\inc
 -I
-D:\Users\84640\lockdoor\STM8L15x-16x-05x-AL31-L_StdPeriph_Lib\Project\util\inc
+C:\Users\my_Cat\Desktop\lock_door\Project\STM8L15x_StdPeriph_Template\EWSTM8\..\..\util\inc
 -I
-D:\Program Files (x86)\IAR Systems\Embedded Workbench 8.0\stm8\inc
+C:\Program Files (x86)\IAR Systems\Embedded Workbench 8.0\stm8\inc
 -I
-D:\Program Files (x86)\IAR Systems\Embedded Workbench 8.0\stm8\inc\c
+C:\Program Files (x86)\IAR Systems\Embedded Workbench 8.0\stm8\inc\c
 -I
-D:\Users\84640\lockdoor\STM8L15x-16x-05x-AL31-L_StdPeriph_Lib\Project\STM8L15x_StdPeriph_Template
+C:\Users\my_Cat\Desktop\lock_door\Project\STM8L15x_StdPeriph_Template
 -I
-D:\Users\84640\lockdoor\STM8L15x-16x-05x-AL31-L_StdPeriph_Lib\Libraries\STM8L15x_StdPeriph_Driver\inc
+C:\Users\my_Cat\Desktop\lock_door\Libraries\STM8L15x_StdPeriph_Driver\inc
 -I
-D:\Users\84640\lockdoor\STM8L15x-16x-05x-AL31-L_StdPeriph_Lib\Utilities\STM8_EVAL
+C:\Users\my_Cat\Desktop\lock_door\Utilities\STM8_EVAL
 -I
-D:\Users\84640\lockdoor\STM8L15x-16x-05x-AL31-L_StdPeriph_Lib\Utilities\STM8_EVAL\STM8L1526_EVAL
+C:\Users\my_Cat\Desktop\lock_door\Utilities\STM8_EVAL\STM8L1526_EVAL
 -I
-D:\Users\84640\lockdoor\STM8L15x-16x-05x-AL31-L_StdPeriph_Lib\Utilities\STM8_EVAL\Common
+C:\Users\my_Cat\Desktop\lock_door\Utilities\STM8_EVAL\Common
 -I
-D:\Users\84640\lockdoor\STM8L15x-16x-05x-AL31-L_StdPeriph_Lib\Utilities\Misc
+C:\Users\my_Cat\Desktop\lock_door\Utilities\Misc
 -I
-D:\Users\84640\lockdoor\STM8L15x-16x-05x-AL31-L_StdPeriph_Lib\Project\FingerVein\inc
+C:\Users\my_Cat\Desktop\lock_door\Project\FingerVein\inc
 -I
-D:\Users\84640\lockdoor\STM8L15x-16x-05x-AL31-L_StdPeriph_Lib\Project\util\inc
+C:\Users\my_Cat\Desktop\lock_door\Project\util\inc
 -D__CHAR_BITS__=8
 -D__CHAR_MAX__=0xff
 -D__CHAR_MIN__=0
@@ -285,10 +285,10 @@ D:\Users\84640\lockdoor\STM8L15x-16x-05x-AL31-L_StdPeriph_Lib\Project\util\inc
 -D__EDG_SYSV=0
 -D__EDG_ANSIC=1
 -D__EDG_CPP11_IL_EXTENSIONS_SUPPORTED=1
--DUSE_STM8L1526_EVAL=1
+-DxUSE_STM8L1526_EVAL=1
 -DSTM8L15X_MD=1
--D_DLIB_CONFIG_FILE_HEADER_NAME="D:\Program Files (x86)\IAR Systems\Embedded Workbench 8.0\stm8\LIB\dlstm8mmn.h"
--D_DLIB_CONFIG_FILE_STRING="D:\\Program Files (x86)\\IAR Systems\\Embedded Workbench 8.0\\stm8\\LIB\\dlstm8mmn.h"
+-D_DLIB_CONFIG_FILE_HEADER_NAME="C:\Program Files (x86)\IAR Systems\Embedded Workbench 8.0\stm8\LIB\dlstm8mmf.h"
+-D_DLIB_CONFIG_FILE_STRING="C:\\Program Files (x86)\\IAR Systems\\Embedded Workbench 8.0\\stm8\\LIB\\dlstm8mmf.h"
 -D__VERSION__="IAR C/C++ Compiler V3.10.1.201 for STM8"
 -D__CODE_MEMORY_LIST1__()=__CODE_MEM_HELPER1__(__code, 0 )
 -D__CODE_MEMORY_LIST2__(_P1)=__CODE_MEM_HELPER2__(__code, 0 ,  _P1 )
