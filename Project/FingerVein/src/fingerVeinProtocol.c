@@ -35,7 +35,7 @@ uint8_t getStateForFiVePacket(struct XgPacket* xgPacket){
 }
 
 void initFingerProtocol(void){
-  fingerQueue=createQueue(50,sizeof(struct XgPacket));
+  fingerQueue=createQueue(3,sizeof(struct XgPacket));
 }
 
 void deInitFingerProtocol(void){

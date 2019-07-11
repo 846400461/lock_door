@@ -17,7 +17,7 @@ xQueue fingerQueue;
 
 
 void initFingerVein(void){
-  tim4config();
+  //tim4config();
   USART3_Config();
   initFingerProtocol();
 }
@@ -49,6 +49,8 @@ void connectFingerVein(void){
   if(sending==1&&count100ms<50){
     if(queueLength(fingerQueue)>0&&dequeue_t(fingerQueue,(void*)&xgPacket)&&
        !getStateForFiVePacket(&xgPacket)){
+         
+         
       machineState=ON;
     }
     return;

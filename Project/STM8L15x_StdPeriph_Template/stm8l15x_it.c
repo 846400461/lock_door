@@ -30,6 +30,8 @@
 #include "stm8l15x_it.h"
 #include "stateManager.h"
 #include "fingerVeinProtocol.h"
+#include "usart.h"
+#include <stdio.h>
 
 
 
@@ -367,20 +369,23 @@ INTERRUPT_HANDLER(TIM3_CC_USART3_RX_IRQHandler, 22)
   /* In order to detect unexpected events during development,
      it is recommended to set a breakpoint on the following instruction.
   */
-  static uint8_t count=0 ;
+  static uint8_t count=0;
+  uint16_t checkSum=0;
   static uint8_t *data;
   static struct XgPacket usart3XgPacket;
-  uint8_t temp=0,checkSum=0;
+  uint8_t temp=0;
 
   /* Read one byte from the receive data register and send it back */
   temp = USART_ReceiveData8(USART3);
-  
+  sendData(USART1,&count,1);
   switch(count){
   case 0:
+
     if(temp!=0xBB) return;
     usart3XgPacket.wPrefix=(temp<<8)|0x0000;
     break;
   case 1:
+  
     if(temp!=0xAA){
       count=0;
       return;
@@ -388,6 +393,7 @@ INTERRUPT_HANDLER(TIM3_CC_USART3_RX_IRQHandler, 22)
     usart3XgPacket.wPrefix|=temp;
     break;
   case 2:
+    
     if(temp!=0x00){
       count=0;
       return;
@@ -395,12 +401,15 @@ INTERRUPT_HANDLER(TIM3_CC_USART3_RX_IRQHandler, 22)
     usart3XgPacket.bAddress=temp;
     break;
   case 3:
+ 
     usart3XgPacket.bCmd=temp;
     break;
   case 4:
+   
     usart3XgPacket.bEncode=temp;
     break;
   case 5:
+ 
     usart3XgPacket.bDataLen=temp;
     break;
   }
@@ -412,16 +421,22 @@ INTERRUPT_HANDLER(TIM3_CC_USART3_RX_IRQHandler, 22)
     usart3XgPacket.wCheckSum=0x0000|temp;
   
   if(count==23){
+    //USART_SendData8(USART1,0x01);
     usart3XgPacket.wCheckSum|=(temp<<8);
     data=(uint8_t*)&usart3XgPacket;
     for(int i=0;i<22;i++){
       checkSum+=data[i];
     }
+    //USART_SendData8(USART1,0x02);
+    //sendData(USART1,&checkSum,2);
+    //sendData(USART1,&usart3XgPacket.wCheckSum,2);
     if(checkSum!=usart3XgPacket.wCheckSum){
       count=0;
       return;
     }
+    //USART_SendData8(USART1,0x03);
     enqueue_t(fingerQueue,(void*)&usart3XgPacket);
+    sendData(USART1,(uint8_t*)&usart3XgPacket,24);
     count=0;
     return;
   }
