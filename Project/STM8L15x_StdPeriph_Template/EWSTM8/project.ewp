@@ -4975,6 +4975,9 @@
             <name>$PROJ_DIR$\..\..\util\src\button.c</name>
         </file>
         <file>
+            <name>$PROJ_DIR$\..\..\util\src\extern_exit_it.c</name>
+        </file>
+        <file>
             <name>$PROJ_DIR$\..\..\util\src\myqueue.c</name>
         </file>
         <file>

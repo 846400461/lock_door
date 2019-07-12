@@ -32,7 +32,7 @@
 #include "fingerVeinProtocol.h"
 #include "usart.h"
 #include <stdio.h>
-
+#include "extern_exit_it.h"
 
 
 /** @addtogroup STM8L15x_StdPeriph_Examples
@@ -176,6 +176,12 @@ INTERRUPT_HANDLER(EXTI0_IRQHandler, 8)
   /* In order to detect unexpected events during development,
      it is recommended to set a breakpoint on the following instruction.
   */
+   EXTI_ClearITPendingBit(EXTI_IT_Pin0);
+  if(GPIO_ReadInputDataBit(GPIOB,GPIO_Pin_0)==SET)
+  {                                                                                                                                          fingerReached=1;
+    fingerReached=1;
+  }
+  GPIO_ToggleBits(GPIOG,GPIO_Pin_5);
 }
 
 /**
@@ -391,7 +397,7 @@ INTERRUPT_HANDLER(TIM3_CC_USART3_RX_IRQHandler, 22)
   */
   static uint8_t count=0;
   uint16_t checkSum=0;
-  static uint8_t *data;
+  uint8_t *data;
   static struct XgPacket usart3XgPacket;
   uint8_t temp=0;
 
@@ -456,7 +462,11 @@ INTERRUPT_HANDLER(TIM3_CC_USART3_RX_IRQHandler, 22)
     }
     //USART_SendData8(USART1,0x03);
     enqueue_t(fingerQueue,(void*)&usart3XgPacket);
-    sendData(USART1,(uint8_t*)&usart3XgPacket,24);
+    //sendData(USART1,(uint8_t*)&usart3XgPacket,24);
+    data=(uint8_t*)&usart3XgPacket;
+    for(int i=0;i<24;i++)
+      printf("%02X ",data[i]);
+    printf("\n");
     count=0;
     return;
   }
