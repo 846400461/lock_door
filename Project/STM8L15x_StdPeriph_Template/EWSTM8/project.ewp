@@ -4972,6 +4972,9 @@
     <group>
         <name>util</name>
         <file>
+            <name>$PROJ_DIR$\..\..\util\src\button.c</name>
+        </file>
+        <file>
             <name>$PROJ_DIR$\..\..\util\src\myqueue.c</name>
         </file>
         <file>

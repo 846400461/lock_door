@@ -52,9 +52,11 @@
 
 /* Private variables ---------------------------------------------------------*/
 //uint8_t TxBuffer[] = "\n\rUSART Example: USART-Hyperterminal communication using Interrupt\nEnter your Text\n\r";
-uint8_t TxBuffer[] = "1";
+uint8_t TxBuffer[] = "\0";
 uint8_t TxCounter = 0;
 uint32_t count100ms=0;
+volatile uint8_t flag=0;
+
 
 /* Private function prototypes -----------------------------------------------*/
 /* Private functions ---------------------------------------------------------*/
@@ -246,6 +248,17 @@ INTERRUPT_HANDLER(EXTI6_IRQHandler, 14)
   /* In order to detect unexpected events during development,
      it is recommended to set a breakpoint on the following instruction.
   */
+       EXTI_ClearITPendingBit(EXTI_IT_Pin6);
+    //  USART_SendData8(USART1, 'A');
+    //读取pin管脚的输入状态
+   if(GPIO_ReadInputDataBit(GPIOE,GPIO_Pin_6)==RESET)
+  {
+    //GPIO_SetBits(GPIOG,GPIO_Pin_4);      
+    
+      
+       flag=1;
+        
+  } 
 }
 
 /**
@@ -258,6 +271,13 @@ INTERRUPT_HANDLER(EXTI7_IRQHandler, 15)
   /* In order to detect unexpected events during development,
      it is recommended to set a breakpoint on the following instruction.
   */
+  
+    EXTI_ClearITPendingBit(EXTI_IT_Pin7);
+    //USART_SendData8(USART1, 'A');
+   if(GPIO_ReadInputDataBit(GPIOE,GPIO_Pin_7)==RESET)
+  {
+    flag=1;
+  }   
 }
 /**
   * @brief LCD /AES Interrupt routine.
@@ -377,7 +397,7 @@ INTERRUPT_HANDLER(TIM3_CC_USART3_RX_IRQHandler, 22)
 
   /* Read one byte from the receive data register and send it back */
   temp = USART_ReceiveData8(USART3);
-  sendData(USART1,&count,1);
+  //sendData(USART1,&count,1);
   switch(count){
   case 0:
 

@@ -66,27 +66,20 @@ void send(uint8_t *data);
 void main(void)
 {
   //struct XgPacket xgPa;
-  uint8_t data[]={0xBB, 0xAA, 0, 1, 0, 8, 0x30, 0x30, 0x30, 0x30,0x30, 0x30, 0x30, 0x30, 0, 0, 0, 0, 0, 0, 0, 0, 0xEE, 2};
+   uint8_t data[]={0xBB, 0xAA, 0, 1, 0, 8, 0x30, 0x30, 0x30, 0x30,0x30, 0x30, 0x30, 0x30, 0, 0, 0, 0, 0, 0, 0, 0, 0xEE, 2};
    GPIO_Init(LED_GPIO_PORT, LED_GPIO_PINS, GPIO_Mode_Out_PP_Low_Fast);
   /*High speed internal clock prescaler: 1*/
    CLK_SYSCLKDivConfig(CLK_SYSCLKDiv_1); 
 //
 //  /* Initialize LEDs mounted on STM8L152X-EVAL board */
 //   /* USART configuration -------------------------------------------*/
-  USART1_Config();
-//  USART2_Config();
-
-  //tim4config();
-//  Delay(20000);
-
-//  initFingerVeinPacket(&xgPa,XG_CMD_CONNECTION,0x08,data);
 
 
    initFingerVein();
-  sendData(USART3,data,24);
+
    while (1)
   {
-
+    stateMachine();
 
   }
 }
