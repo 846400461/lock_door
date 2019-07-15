@@ -190,6 +190,7 @@
                     <name>CCDefines</name>
                     <state>xUSE_STM8L1526_EVAL</state>
                     <state>STM8L15X_MD</state>
+                    <state>DEBUG_FINGERVEIN</state>
                 </option>
                 <option>
                     <name>CCPreprocFile</name>

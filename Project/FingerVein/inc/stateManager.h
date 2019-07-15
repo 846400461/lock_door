@@ -2,6 +2,20 @@
 #define STATEMANAGER_H
 #include "stm8l15x.h"
 
+#ifdef DEBUG_FINGERVEIN
+
+#define fingerLog(format, ...) printf(format, ##__VA_ARGS__)
+
+#else
+
+#define fingerLog(format, ...)
+
+#endif
+
+typedef void (*actionHandler)();
+typedef void (*identifyHandler)(uint8_t*,uint8_t);
+
+
 void stateMachine(void);
 
 void connectFingerVein(void);

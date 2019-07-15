@@ -7,13 +7,17 @@
 #include "tim4.h"
 #include "button.h"
 #include "extern_exit_it.h"
+#include "myqueue.h"
 #include <stdio.h>
 #include <string.h>
 
-uint8_t enrollEvent=0;
-uint8_t emptyId[4]={0};
-uint8_t sending=0;
+static uint8_t enrollEvent=0;
+static uint8_t emptyId[4]={0};
+static uint8_t sending=0;
+static int8_t ReCount=0;
 static struct XgPacket xgPacket;
+
+void dequeue_tOnFinger(xQueue qu,void *data);
 
 enum FINGER_VEIN_STATE{
   OFF=0,
@@ -42,7 +46,7 @@ void deInitFingerVein(void){
 void stateMachine(void){
   
   //printf("machineState : %d \n\n",machineState);
-  if(machineState!=OFF&&machineState!=REGISTRATION)
+  if(machineState!=OFF)
   {
     MachineTimeOut();
   }
@@ -103,11 +107,11 @@ void freeIdentification(void){
     sending=1;
     initFingerVeinPacket(&xgPacket,XG_CMD_IDENTIFY_FREE,0x00,"0");
     sendData(USART3,(uint8_t*)&xgPacket,24);
-    printf("\nsend freeIdentification data\n");
+    fingerLog("\nsend freeIdentification data\n");
   }
   if(queueLength(fingerQueue)==0) return;
-  dequeue_t(fingerQueue,(void*)&xgPacket);
-  printf("\nbData : %02X\n",xgPacket.bData[0]);
+  dequeue_tOnFinger(fingerQueue,(void*)&xgPacket);
+  fingerLog("\nbData : %02X\n",xgPacket.bData[0]);
   switch(xgPacket.bData[0]){
   case 0x20:
     putIntoFinger();
@@ -134,21 +138,21 @@ void obtainEmptyUserId(void){
     initFingerVeinPacket(&xgPacket,XG_CMD_GET_EMPTY_ID,0x00,"0");
     sending=1;
     sendData(USART3,(uint8_t*)&xgPacket,24);
-    printf("\nsend obtainEmptyUserId cmd\n");
+    fingerLog("\nsend obtainEmptyUserId cmd\n");
   }
   if(queueLength(fingerQueue)){
-    dequeue_t(fingerQueue,(void*)&xgPacket);
+    dequeue_tOnFinger(fingerQueue,(void*)&xgPacket);
     if(xgPacket.bCmd!=XG_CMD_GET_EMPTY_ID) return;
     if(xgPacket.bData[0]==XG_ERR_SUCCESS){
-      printf("id %02x\n",xgPacket.bData[1]);
+      fingerLog("id %02x\n",xgPacket.bData[1]);
       //emptyId=xgPacket.bData[1];
       for(int i=0;i<4;i++)
         emptyId[i]=xgPacket.bData[i+1];
-      printf("\nemptyUserId: %02X \n",emptyId);
+      //printf("\nemptyUserId: %02X \n",emptyId);
       machineState = REGISTRATION;
     }else{
       machineState = LOW_POWER_CHECK;
-      printf("\nno emptyUserId\n");
+      fingerLog("\nno emptyUserId\n");
       userEnrollFailed();
     }
     sending=0;
@@ -169,7 +173,7 @@ void userEnroll(void){
     sending=1;
   }
   if(queueLength(fingerQueue)==0) return;
-  dequeue_t(fingerQueue,(void*)&xgPacket);
+  dequeue_tOnFinger(fingerQueue,(void*)&xgPacket);
   switch(xgPacket.bData[0]){
   case 0x00:
     userEnrollSuccess();
@@ -188,6 +192,7 @@ void userEnroll(void){
     putIntoFinger();
     break;
   }
+  fingerReached=0;
 }
 
 void timeoutHandler(void){
@@ -195,10 +200,10 @@ void timeoutHandler(void){
     initFingerVeinPacket(&xgPacket,XG_CMD_CANCEL,0x00,"0");
     sendData(USART3,(uint8_t*)&xgPacket,24);
     sending=1;
-    printf("\nXG_CMD_CANCEL\n");
+    fingerLog("\nXG_CMD_CANCEL\n");
   }
   if(queueLength(fingerQueue)==0) return;
-  dequeue_t(fingerQueue,(void*)&xgPacket);
+  dequeue_tOnFinger(fingerQueue,(void*)&xgPacket);
   machineState=LOW_POWER_CHECK;
   sending=0;
 }
@@ -206,16 +211,16 @@ void timeoutHandler(void){
 void identifySuccess(uint8_t *data){
   
   GPIO_ToggleBits(GPIOG,GPIO_Pin_6);
-  printf("\nidentifySuccess\n");
-  for(int i=0;i<24;i++)
-  printf("%02X ",data[i]);
+  fingerLog("\nidentifySuccess\n");
+//  for(int i=0;i<24;i++)
+//  printf("%02X ",data[i]);
 }
   
 void identifyFailed(uint8_t *data){
   GPIO_ToggleBits(GPIOG,GPIO_Pin_7);
-  printf("\nidentifyFailed\n");
-  for(int i=0;i<24;i++)
-  printf("%02X ",data[i]);
+  fingerLog("\nidentifyFailed\n");
+//  for(int i=0;i<24;i++)
+//  printf("%02X ",data[i]);
 }
 
 void enrollFingerVein(void){
@@ -223,19 +228,19 @@ void enrollFingerVein(void){
 }
                          
 void userEnrollFailed(void){
-  printf("\nuserEnrollFailed\n");
+  fingerLog("\nuserEnrollFailed\n");
 }
 
 void userEnrollSuccess(void){
-  printf("\nuserEnrollSuccess\n");
+  fingerLog("\nuserEnrollSuccess\n");
 }
 
 void putIntoFinger(void){
-   printf("\nput into finger\n");
+   fingerLog("\nput into finger\n");
 }
 
 void takeAwayFinger(void){
-  printf("\ntake away finger\n");
+  fingerLog("\ntake away finger\n");
 }
 
 void MachineTimeOut(void){
@@ -244,19 +249,26 @@ void MachineTimeOut(void){
     timeStart=0;
     return;
   }
-  if(queueLength(fingerQueue)>=0) {
+  if(ReCount) {
     timeStart=0;
+    (ReCount-1)<=0 ? ReCount=0 : ReCount--;
     return;
   }
   if(!timeStart) {
     timeStart=1;
     count100ms=0;
+    fingerLog("\ntimeStart\n");
   }
   
-  if(count100ms>=50){
+  if(count100ms>=60){
     machineState=TIMEOUT;
     timeStart=0;
     sending=0;
   }
   
+}
+
+static void dequeue_tOnFinger(xQueue qu,void *data){
+  dequeue_t(fingerQueue,data);
+  ReCount++;
 }

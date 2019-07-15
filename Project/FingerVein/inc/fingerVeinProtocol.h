@@ -87,4 +87,6 @@ uint8_t getStateForFiVePacket(struct XgPacket* xgPacket);
 
 void initFingerVeinPacketNobData(struct XgPacket* xgPacket, uint8_t bCmd, uint8_t bDataLen);
 
+void receiveFingerProtocolData(uint8_t temp);
+
 #endif
