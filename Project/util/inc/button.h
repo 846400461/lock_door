@@ -2,5 +2,5 @@
 #define BUTTON_H
 
 
-void button(void);
+void buttonInit(void);
 #endif

@@ -230,6 +230,8 @@ INTERRUPT_HANDLER(EXTI4_IRQHandler, 12)
   /* In order to detect unexpected events during development,
      it is recommended to set a breakpoint on the following instruction.
   */
+  EXTI_ClearITPendingBit(EXTI_IT_Pin4);
+  enrollFingerVein();
 }
 
 /**
@@ -283,6 +285,7 @@ INTERRUPT_HANDLER(EXTI7_IRQHandler, 15)
    if(GPIO_ReadInputDataBit(GPIOE,GPIO_Pin_7)==RESET)
   {
     flag=1;
+    printf("EXTI7_IRQHandler\n");
   }   
 }
 /**
@@ -464,6 +467,7 @@ INTERRUPT_HANDLER(TIM3_CC_USART3_RX_IRQHandler, 22)
     enqueue_t(fingerQueue,(void*)&usart3XgPacket);
     //sendData(USART1,(uint8_t*)&usart3XgPacket,24);
     data=(uint8_t*)&usart3XgPacket;
+    printf("\nreach data : ");
     for(int i=0;i<24;i++)
       printf("%02X ",data[i]);
     printf("\n");

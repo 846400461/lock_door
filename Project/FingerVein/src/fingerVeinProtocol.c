@@ -30,12 +30,24 @@ void initFingerVeinPacket(struct XgPacket* xgPacket, uint8_t bCmd, uint8_t bData
 
 }
 
+void initFingerVeinPacketNobData(struct XgPacket* xgPacket, uint8_t bCmd, uint8_t bDataLen){
+  uint8_t i=bDataLen;
+  xgPacket->wPrefix=0xBBAA;
+  xgPacket->bAddress=0x00;
+  xgPacket->bCmd=bCmd;
+  xgPacket->bEncode=0x00;
+  xgPacket->bDataLen=bDataLen;
+  for(i;i<16;i++)
+    xgPacket->bData[i]=0;
+  xgPacket->wCheckSum=checkSum((uint8_t*)xgPacket,22);
+}
+
 uint8_t getStateForFiVePacket(struct XgPacket* xgPacket){
   return xgPacket->bData[0];
 }
 
 void initFingerProtocol(void){
-  fingerQueue=createQueue(5,sizeof(struct XgPacket));
+  fingerQueue=createQueue(4,sizeof(struct XgPacket));
 }
 
 void deInitFingerProtocol(void){

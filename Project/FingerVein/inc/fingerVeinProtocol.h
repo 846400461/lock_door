@@ -52,6 +52,29 @@ struct XgPacket
 #define XG_CMD_READ_ENROLL            0x22 //读取指定ID登录数据
 #define XG_CMD_WRITE_ENROLL           0x23 //写入（覆盖）指定ID登录数据
 
+/******************************错误代码****************************************/
+#define	XG_ERR_SUCCESS               0x00 //操作成功
+#define	XG_ERR_FAIL                  0x01 //操作失败
+#define XG_ERR_COM                    0x02 //通讯错误
+#define XG_ERR_DATA                   0x03 //数据校验错误
+#define XG_ERR_INVALID_PWD            0x04 //密码错误
+#define XG_ERR_INVALID_PARAM          0x05 //参数错误
+#define XG_ERR_INVALID_ID             0x06 //ID错误
+#define XG_ERR_EMPTY_ID               0x07 //指定ID为空（无登录数据）
+#define XG_ERR_NOT_ENOUGH             0x08 //无足够登录空间
+#define XG_ERR_NO_SAME_FINGER         0x09 //不是同一根手指
+#define XG_ERR_DUPLICATION_ID         0x0A //有相同登录ID
+#define XG_ERR_TIME_OUT               0x0B //等待手指输入超时
+#define XG_ERR_VERIFY                 0x0C //认证失败
+#define XG_ERR_NO_NULL_ID             0x0D //已无空ID
+#define XG_ERR_BREAK_OFF              0x0E //操作中断
+#define XG_ERR_NO_CONNECT             0x0F //未连接
+
+/******************************状态代码****************************************/
+#define XG_INPUT_FINGER               0x20 //请求放入手指
+#define XG_RELEASE_FINGER             0x21 //请求拿开手指
+
+
 uint16_t checkSum(uint8_t* pBuf, uint32_t len);
 
 void initFingerVeinPacket(struct XgPacket* xgPacket, uint8_t bCmd, uint8_t bDataLen, uint8_t* bData);
@@ -61,5 +84,7 @@ void deInitFingerProtocol(void);
 void initFingerProtocol(void);
 
 uint8_t getStateForFiVePacket(struct XgPacket* xgPacket);
+
+void initFingerVeinPacketNobData(struct XgPacket* xgPacket, uint8_t bCmd, uint8_t bDataLen);
 
 #endif

@@ -17,4 +17,24 @@ void freeIdentification(void);
 void identifySuccess(uint8_t *data);
 
 void identifyFailed(uint8_t *data);
+
+void enrollFingerVein(void);
+
+void obtainEmptyUserId(void);
+
+void userEnroll(void);
+
+void enrollFingerVein(void);
+
+void userEnrollFailed(void);
+
+void userEnrollSuccess(void);
+
+void putIntoFinger(void);
+
+void takeAwayFinger(void);
+
+void timeoutHandler(void);
+
+void MachineTimeOut(void);
 #endif

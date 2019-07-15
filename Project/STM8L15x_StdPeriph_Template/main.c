@@ -76,7 +76,7 @@ void main(void)
 
 
    initFingerVein();
-   printf("hello");
+   //printf("hello");
 
    while (1)
   {
