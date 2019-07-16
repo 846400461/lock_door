@@ -54,7 +54,7 @@
 //uint8_t TxBuffer[] = "\n\rUSART Example: USART-Hyperterminal communication using Interrupt\nEnter your Text\n\r";
 uint8_t TxBuffer[] = "\0";
 uint8_t TxCounter = 0;
-uint32_t count100ms=0;
+//uint32_t count100ms=0;
 volatile uint8_t flag=0;
 
 
@@ -178,8 +178,8 @@ INTERRUPT_HANDLER(EXTI0_IRQHandler, 8)
   */
    EXTI_ClearITPendingBit(EXTI_IT_Pin0);
   if(GPIO_ReadInputDataBit(GPIOB,GPIO_Pin_0)==SET)
-  {                                                                                                                                          fingerReached=1;
-    fingerReached=1;
+  {                                                                                                               
+    fingerReach();
   }
   GPIO_ToggleBits(GPIOG,GPIO_Pin_5);
 }
@@ -443,7 +443,7 @@ INTERRUPT_HANDLER(TIM4_UPD_OVF_TRG_IRQHandler, 25)
     if(count==100)
     {
       count=0;
-      count100ms++;      
+      fingerVeinTime();
       
     }
 }

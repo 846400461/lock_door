@@ -11,44 +11,32 @@
 #define fingerLog(format, ...)
 
 #endif
+typedef void (*ActionHandler)(void);
+typedef void (*IdentifyHandler)(uint8_t*,uint8_t);
+typedef void (*EnrollHandler)(uint8_t*,uint8_t);
 
-typedef void (*actionHandler)();
-typedef void (*identifyHandler)(uint8_t*,uint8_t);
+struct FingerVeinConfig{
+  USART_TypeDef* proUsart;
+  ActionHandler putInto;
+  ActionHandler takeAway;
+  ActionHandler connectSuccess;
+  IdentifyHandler identifyFailHandler;
+  IdentifyHandler identifySuccessHandler;
+  EnrollHandler enrollFailHandler;
+  EnrollHandler enrollSuccessHandler;
+};
 
+
+void initFingerVein(struct FingerVeinConfig config);
 
 void stateMachine(void);
 
-void connectFingerVein(void);
-
-void initFingerVein(void);
-
 void deInitFingerVein(void);
 
-void lowPowerState(void);
-
-void freeIdentification(void);
-
-void identifySuccess(uint8_t *data);
-
-void identifyFailed(uint8_t *data);
-
 void enrollFingerVein(void);
 
-void obtainEmptyUserId(void);
+void fingerVeinTime(void);
 
-void userEnroll(void);
+void fingerReach(void);
 
-void enrollFingerVein(void);
-
-void userEnrollFailed(void);
-
-void userEnrollSuccess(void);
-
-void putIntoFinger(void);
-
-void takeAwayFinger(void);
-
-void timeoutHandler(void);
-
-void MachineTimeOut(void);
 #endif

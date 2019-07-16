@@ -31,6 +31,9 @@
 #include "tim4.h"
 #include "usart.h"
 #include "stateManager.h"
+#include "button.h"
+#include "extern_exit_it.h"
+#include <string.h>
 
 #define LED_GPIO_PORT  GPIOG
 #define LED_GPIO_PINS  GPIO_Pin_4 | GPIO_Pin_5 | GPIO_Pin_6 | GPIO_Pin_7
@@ -54,6 +57,7 @@
 void Delay (uint32_t nCount);
 void delay_ms(uint32_t nCount);
 void send(uint8_t *data);
+void printfAct(void);
 /* Private functions ---------------------------------------------------------*/
 
 /**
@@ -74,10 +78,26 @@ void main(void)
 //  /* Initialize LEDs mounted on STM8L152X-EVAL board */
 //   /* USART configuration -------------------------------------------*/
 
-
-   initFingerVein();
+    
+   //initFingerVein();
    //printf("hello");
-
+   tim4config();
+   fingerExternExitConfig();
+   buttonInit();
+   USART1_Config();
+   USART3_Config();
+   
+   struct FingerVeinConfig config;
+   memset(&config,0,sizeof(struct FingerVeinConfig));
+   config.connectSuccess=printfAct;
+//   config.enrollFailHandler=0;
+//   config.enrollSuccessHandler=0;
+//   config.identifyFailHandler=0;
+//   config.putInto=0;
+//   config.takeAway=0;
+   config.proUsart=USART3;
+   initFingerVein(config);
+   
    while (1)
   {
     stateMachine();
@@ -131,6 +151,9 @@ int fputc(int ch,FILE *f)
 
 }
 
+void printfAct(void){
+  printf("hello fingerVein\n");
+}
 
 #ifdef  USE_FULL_ASSERT
 /**

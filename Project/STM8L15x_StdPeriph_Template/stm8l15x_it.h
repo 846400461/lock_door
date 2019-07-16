@@ -37,8 +37,6 @@
 /* Exported macro ------------------------------------------------------------*/
 /* Exported functions ------------------------------------------------------- */
 
-extern uint32_t count100ms;
-extern volatile uint8_t flag;
 
 #ifdef _COSMIC_
  void _stext(void); /* RESET startup routine */

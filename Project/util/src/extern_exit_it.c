@@ -1,8 +1,6 @@
 #include "stm8l15x.h"
 #include "extern_exit_it.h"
 
-uint8_t fingerReached=0;
-
 void fingerExternExitConfig(void)
 {
     disableInterrupts();

@@ -6292,6 +6292,9 @@
     <group>
         <name>FingerVein</name>
         <file>
+            <name>$PROJ_DIR$\..\..\FingerVein\src\fingerVeinDemo.c</name>
+        </file>
+        <file>
             <name>$PROJ_DIR$\..\..\FingerVein\src\fingerVeinProtocol.c</name>
         </file>
         <file>
