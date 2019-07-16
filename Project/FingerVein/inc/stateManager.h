@@ -24,6 +24,7 @@ struct FingerVeinConfig{
   IdentifyHandler identifySuccessHandler;
   EnrollHandler enrollFailHandler;
   EnrollHandler enrollSuccessHandler;
+  EnrollHandler obtainIdHandler;
 };
 
 

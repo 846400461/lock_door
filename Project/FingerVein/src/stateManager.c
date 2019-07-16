@@ -32,6 +32,7 @@ void obtainEmptyUserId(void);
 void userEnroll(void);
 void userEnrollFailed(uint8_t *data,uint8_t length);
 void userEnrollSuccess(uint8_t *data,uint8_t length);
+void obtainIded(uint8_t *data,uint8_t length);
 void putIntoFinger(void);
 void takeAwayFinger(void);
 void timeoutHandler(void);
@@ -171,6 +172,7 @@ static void obtainEmptyUserId(void){
         emptyId[i]=xgPacket.bData[i+1];
       //printf("\nemptyUserId: %02X \n",emptyId);
       machineState = REGISTRATION;
+      obtainIded(emptyId,4);
     }else{
       machineState = LOW_POWER_CHECK;
       fingerLog("\nno emptyUserId\n");
@@ -314,4 +316,10 @@ static void connected(void){
   fingerLog("\nconnectSuccess\n");
   if(fingerVeinConfig.connectSuccess)
     fingerVeinConfig.connectSuccess();
+}
+
+static void obtainIded(uint8_t *data,uint8_t length){
+  fingerLog("\obtainIded\n");
+  if(fingerVeinConfig.obtainIdHandler)
+    fingerVeinConfig.obtainIdHandler(data,length);
 }
