@@ -11,10 +11,12 @@
 #include <stdio.h>
 #include <string.h>
 
-static uint8_t enrollEvent=0,count100ms=0;
+static uint8_t enrollEvent=0,count100ms=0,deleteEvent=0,deleteAllEvent=0,resetEvent=0;
 static uint8_t fingerReached=0;
 static uint8_t emptyId[4]={0};
+static uint8_t userId[4]={0};
 static uint8_t sending=0;
+//static uint8_t level=0;;
 static int8_t ReCount=0;
 static struct XgPacket xgPacket;
 static struct FingerVeinConfig fingerVeinConfig;
@@ -37,27 +39,29 @@ void putIntoFinger(void);
 void takeAwayFinger(void);
 void timeoutHandler(void);
 void MachineTimeOut(void);
-
+void deleteUser(void);
+void deleteUserAll(void);
+void deleteSuccess(void);
+void reset(void);
+void resetSuccess(void);
+//void setSecurityLevel(void);
 enum FINGER_VEIN_STATE{
   OFF=0,
   LOW_POWER_CHECK,
   OBTAIN_ID,
   REGISTRATION,
   IDENTIFICATION,
-  TIMEOUT
+  TIMEOUT,
+  DELETE,
+  DELETEALL,
+  RESET_ALL
 }machineState=OFF;
 xQueue fingerQueue;
 
 
 void initFingerVein(struct FingerVeinConfig config){
-  //tim4config();
-  //fingerExternExitConfig();
-  //buttonInit();
-  //USART1_Config();
-  //USART3_Config();
-  initFingerProtocol();
-  //memset(&fingerVeinConfig,0,sizeof(fingerVeinConfig));
-  fingerVeinConfig=config;
+   initFingerProtocol();
+   fingerVeinConfig=config;
 }
 
 void deInitFingerVein(void){
@@ -66,7 +70,7 @@ void deInitFingerVein(void){
 
 void stateMachine(void){
   
-  //printf("machineState : %d \n\n",machineState);
+  
   if(machineState!=OFF)
   {
     MachineTimeOut();
@@ -90,9 +94,17 @@ void stateMachine(void){
   case TIMEOUT:
     timeoutHandler();
     break;
+  case DELETE:
+    deleteUser();
+    break;
+  case DELETEALL:
+    deleteUserAll();
+    break;
+  case RESET_ALL:
+    reset();
+    break;
   }
 }
-
 static void connectFingerVein(void){
   if(sending==1&&count100ms>=50){
     sending=0;
@@ -120,8 +132,21 @@ static void lowPowerState(void){
     fingerReached=0;
   }else if(enrollEvent){
     machineState=OBTAIN_ID;
-    enrollEvent=0;
+    enrollEvent=0;    
+  }else if(deleteEvent){
+    machineState=DELETE;
+    deleteEvent=0;
+  }else if(deleteAllEvent){
+    machineState=DELETEALL;
+    deleteAllEvent=0;    
+  }else if(resetEvent){
+    machineState=RESET_ALL;
+    resetEvent=0;    
   }
+//    else if(setlevelEvent){
+//    machineState=SETLEVEL;
+//    setlevelEvent=0;
+// }
 }
 
 static void freeIdentification(void){
@@ -167,10 +192,8 @@ static void obtainEmptyUserId(void){
     if(xgPacket.bCmd!=XG_CMD_GET_EMPTY_ID) return;
     if(xgPacket.bData[0]==XG_ERR_SUCCESS){
       fingerLog("id %02x\n",xgPacket.bData[1]);
-      //emptyId=xgPacket.bData[1];
       for(int i=0;i<4;i++)
         emptyId[i]=xgPacket.bData[i+1];
-      //printf("\nemptyUserId: %02X \n",emptyId);
       machineState = REGISTRATION;
       obtainIded(emptyId,4);
     }else{
@@ -185,14 +208,8 @@ static void obtainEmptyUserId(void){
   
 static void userEnroll(void){
   if(sending==0){
-//    for(int i=0;i<4;i++)
-//      xgPacket.bData[i]=(emptyId>>(i*8))&0xff;
-    //memset(xgPacket.bData,0,16);
-    //xgPacket.bData[0]=emptyId;
     initFingerVeinPacket(&xgPacket,XG_CMD_ENROLL,0x04,emptyId); 
-    //sendData(USART1,(uint8_t*)&xgPacket,24);
-    sendData(fingerVeinConfig.proUsart,(uint8_t*)&xgPacket,24);
-  
+    sendData(fingerVeinConfig.proUsart,(uint8_t*)&xgPacket,24);  
     sending=1;
   }
   if(queueLength(fingerQueue)==0) return;
@@ -319,7 +336,116 @@ static void connected(void){
 }
 
 static void obtainIded(uint8_t *data,uint8_t length){
-  fingerLog("\obtainIded\n");
+  
+  
+  
+  fingerLog("\n obtainIded\n");
   if(fingerVeinConfig.obtainIdHandler)
     fingerVeinConfig.obtainIdHandler(data,length);
 }
+void deleteUserid(uint8_t *data){
+  for(int i =0;i<4;i++ )
+  {
+      userId[i]=data[i]; 
+      printf("");
+  }
+  deleteEvent=1;
+}
+
+void deleteAllUser(void){
+  deleteAllEvent=1;
+}
+
+static void deleteUser(void){  
+  
+  
+    if(sending==0){
+    initFingerVeinPacket(&xgPacket,XG_CMD_CLEAR_ENROLL,0x04,userId); 
+    sendData(fingerVeinConfig.proUsart,(uint8_t*)&xgPacket,24);
+  
+    sending=1;
+  }
+  if(queueLength(fingerQueue)==0) return;
+  dequeue_tOnFinger(fingerQueue,(void*)&xgPacket);
+  machineState=LOW_POWER_CHECK;
+  if(xgPacket.bData[0]==0){
+      deleteSuccess();
+  }  
+  sending=0;
+}
+static void deleteUserAll(void){
+  
+  
+  
+    if(sending==0){
+    initFingerVeinPacket(&xgPacket,XG_CMD_CLEAR_ALL_ENROLL,0x00,"0"); 
+    sendData(fingerVeinConfig.proUsart,(uint8_t*)&xgPacket,24);  
+    sending=1;
+  }
+  if(queueLength(fingerQueue)==0) return;
+  dequeue_tOnFinger(fingerQueue,(void*)&xgPacket);
+  machineState=LOW_POWER_CHECK;
+    if(xgPacket.bData[0]==0){
+      deleteSuccess();
+  }  
+  sending=0;
+}
+static void deleteSuccess(void){    
+  
+    fingerLog("\n deleteSuccess\n");
+    if(fingerVeinConfig.idDeleteSuccess)
+     fingerVeinConfig.idDeleteSuccess();
+  
+}
+static void reset(void){  
+    if(sending==0){
+    initFingerVeinPacket(&xgPacket,XG_CMD_FACTORY_SETTING,0x00,"0"); 
+    sendData(fingerVeinConfig.proUsart,(uint8_t*)&xgPacket,24);  
+    sending=1;
+  }
+  if(queueLength(fingerQueue)==0) return;
+  dequeue_tOnFinger(fingerQueue,(void*)&xgPacket);
+  machineState=LOW_POWER_CHECK;
+    if(xgPacket.bData[0]==0){
+      resetSuccess();
+  }  
+  sending=0;
+}
+static void resetSuccess(void){    
+    fingerLog("\n resetSuccess\n");
+    if(fingerVeinConfig.ResetSuccess)
+     fingerVeinConfig.ResetSuccess();  
+}
+void resetevent(void){
+ resetEvent=1;
+}
+
+//void setlevel(uint8_t data){
+//  level=data;
+//  setlevelEvent=1;
+//  
+//}
+//
+//static void setSecurityLevel(void){  
+//    if(sending==0){      
+//    initFingerVeinPacket(&xgPacket,XG_CMD_SET_SECURITYLEVEL,0x01,&level); 
+//    sendData(fingerVeinConfig.proUsart,(uint8_t*)&xgPacket,24);  
+//    sending=1;
+//  }
+//  if(queueLength(fingerQueue)==0) return;
+//  dequeue_tOnFinger(fingerQueue,(void*)&xgPacket);
+//  machineState=LOW_POWER_CHECK;
+//  sending=0;
+//    
+//
+//}
+//
+//
+//
+
+
+
+
+
+
+

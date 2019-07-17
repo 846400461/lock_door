@@ -279,14 +279,9 @@ INTERRUPT_HANDLER(EXTI7_IRQHandler, 15)
   /* In order to detect unexpected events during development,
      it is recommended to set a breakpoint on the following instruction.
   */
-  
-    EXTI_ClearITPendingBit(EXTI_IT_Pin7);
-    //USART_SendData8(USART1, 'A');
-   if(GPIO_ReadInputDataBit(GPIOE,GPIO_Pin_7)==RESET)
-  {
-    flag=1;
-    printf("EXTI7_IRQHandler\n");
-  }   
+  EXTI_ClearITPendingBit(EXTI_IT_Pin7);
+  uint8_t data[4]={1,0,0,0};
+  deleteUserid(data);
 }
 /**
   * @brief LCD /AES Interrupt routine.

@@ -7,5 +7,8 @@ void buttonInit(){
     disableInterrupts();
     GPIO_Init(GPIOC,GPIO_Pin_4,GPIO_Mode_In_PU_IT);
     EXTI_SetPinSensitivity(EXTI_Pin_4,EXTI_Trigger_Falling);
+    
+    GPIO_Init(GPIOC,GPIO_Pin_7,GPIO_Mode_In_PU_IT);
+    EXTI_SetPinSensitivity(EXTI_Pin_7,EXTI_Trigger_Falling);
     enableInterrupts();//ENABLE
 }

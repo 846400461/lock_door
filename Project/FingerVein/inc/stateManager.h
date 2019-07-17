@@ -20,11 +20,13 @@ struct FingerVeinConfig{
   ActionHandler putInto;
   ActionHandler takeAway;
   ActionHandler connectSuccess;
+  ActionHandler idDeleteSuccess;
+  ActionHandler ResetSuccess;
   IdentifyHandler identifyFailHandler;
   IdentifyHandler identifySuccessHandler;
   EnrollHandler enrollFailHandler;
   EnrollHandler enrollSuccessHandler;
-  EnrollHandler obtainIdHandler;
+  EnrollHandler obtainIdHandler;  
 };
 
 
@@ -39,5 +41,14 @@ void enrollFingerVein(void);
 void fingerVeinTime(void);
 
 void fingerReach(void);
+
+void deleteUserid(uint8_t *data);
+
+void deleteAllUser(void);
+
+void resetevent(void);
+
+//void setlevel(uint8_t data);
+
 
 #endif
