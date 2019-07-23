@@ -33,6 +33,7 @@
 #include "usart.h"
 #include <stdio.h>
 #include "extern_exit_it.h"
+#include "motor.h"
 
 
 /** @addtogroup STM8L15x_StdPeriph_Examples
@@ -232,6 +233,7 @@ INTERRUPT_HANDLER(EXTI4_IRQHandler, 12)
   */
   EXTI_ClearITPendingBit(EXTI_IT_Pin4);
   enrollFingerVein();
+  unlockEvent();
 }
 
 /**
@@ -439,7 +441,7 @@ INTERRUPT_HANDLER(TIM4_UPD_OVF_TRG_IRQHandler, 25)
     {
       count=0;
       fingerVeinTime();
-      
+      motorTime();
     }
 }
 /**

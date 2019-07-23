@@ -35,6 +35,7 @@
 #include "extern_exit_it.h"
 #include <string.h>
 #include "fingerVeinDemo.h"
+#include "motor.h"
 
 #define LED_GPIO_PORT  GPIOG
 #define LED_GPIO_PINS  GPIO_Pin_4 | GPIO_Pin_5 | GPIO_Pin_6 | GPIO_Pin_7
@@ -73,10 +74,17 @@ void main(void)
     GPIO_Init(LED_GPIO_PORT, LED_GPIO_PINS, GPIO_Mode_Out_PP_Low_Fast);
   /*High speed internal clock prescaler: 1*/
    CLK_SYSCLKDivConfig(CLK_SYSCLKDiv_1);      
-   testDemo();   
+   //testDemo();
+    
+    buttonInit();
+    tim4config();
+    USART1_Config();
+    initMotor();
+    printf("hello\n");
    while (1)
   {
-    stateMachine();
+    //stateMachine();
+    motorProcess();
 
   }
 }

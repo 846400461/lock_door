@@ -6302,6 +6302,12 @@
         </file>
     </group>
     <group>
+        <name>motor</name>
+        <file>
+            <name>$PROJ_DIR$\..\motor.c</name>
+        </file>
+    </group>
+    <group>
         <name>STM8L15x_StdPeriph_Driver</name>
         <file>
             <name>$PROJ_DIR$\..\..\..\Libraries\STM8L15x_StdPeriph_Driver\src\stm8l15x_adc.c</name>
